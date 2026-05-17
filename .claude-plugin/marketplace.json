@@ -1,0 +1,14 @@
+{
+  "name": "scan0815-skills",
+  "description": "Skills published by Scan0815",
+  "owner": {
+    "name": "Scan0815"
+  },
+  "plugins": [
+    {
+      "name": "ionic-stencil",
+      "source": "./",
+      "description": "Master Ionic Framework components with StencilJS, Shadow DOM, CSS variables, lifecycle hooks, and performance optimization."
+    }
+  ]
+}
