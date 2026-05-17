@@ -496,29 +496,31 @@ componentDidLoad() {
 
 ## Using Ionic Components in Stencil
 
+> **No manual `<ion-page>`** — `ion-router` automatically wraps every routed component in an `ion-page` element. An additional `<ion-page>` in `render()` causes double wrapping and breaks layout (scrolling, safe-area insets).
+
 ```tsx
 import { Component, ComponentInterface, h } from '@stencil/core';
 
 @Component({ tag: 'my-page', styleUrl: 'my-page.scss', shadow: false })
 export class MyPage implements ComponentInterface {
   render() {
-    return (
-      <ion-page>
-        <ion-header>
-          <ion-toolbar>
-            <ion-title>My Page</ion-title>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content>
-          <ion-button color="primary" onClick={() => this.doSomething()}>
-            Click
-          </ion-button>
-        </ion-content>
-      </ion-page>
-    );
+    return [
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>My Page</ion-title>
+        </ion-toolbar>
+      </ion-header>,
+      <ion-content>
+        <ion-button color="primary" onClick={() => this.doSomething()}>
+          Click
+        </ion-button>
+      </ion-content>
+    ];
   }
 }
 ```
+
+> **Tip:** Routed pages return an array (fragment) — `ion-header` + `ion-content` side by side, without a wrapper element. `ion-router` handles the rest.
 
 **Important:** If your custom component uses `shadow: true`, Ionic components inside it won't receive global CSS variables unless you pass them through. Prefer `shadow: false` or `scoped: true` for page-level components.
 
