@@ -345,6 +345,13 @@ export class MyDetailModal implements ComponentInterface {
 > - footer: `ion-footer` → `ion-toolbar` → `ion-buttons slot="start/end"`
 > - `modalController.dismiss(data, role)` — `role` to distinguish confirm/cancel at the caller
 
+> **Styling the modal:** `ion-modal` is Shadow DOM. Use CSS variables + `::part()` in global CSS —
+> e.g. `ion-modal.my-modal { --border-radius: 16px; }` and `ion-modal.my-modal::part(content) { … }`.
+> Pass the hook class via the controller (`modalController.create({ cssClass: 'my-modal' })`) or, for
+> an inline `<ion-modal>`, via plain `class="my-modal"` — **not** `cssClass=` as a JSX attribute
+> (that's an `@internal` Ionic attribute that can break on an `@ionic/core` bump).
+> Full details + the pre-update build smoke test in `references/shadow-dom.md` → "Shadow Overlays".
+
 
 
 ---
