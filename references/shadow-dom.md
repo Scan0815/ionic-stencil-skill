@@ -160,10 +160,10 @@ non-public Ionic attribute that the bundled Stencil compiler tolerates only by a
 > Before every `@ionic/core` update, run a build smoke test (e.g. `nx build console`) to catch a
 > dropped attribute at compile time instead of at runtime.
 >
-> **Version scope:** This guidance is written against `@ionic/core` **8.x**. Ionic regenerates its
-> JSX type definitions on every release, so the exact set of tolerated `@internal` attributes can
-> shift between versions — re-verify after each major **and** minor bump rather than assuming the
-> last-known-good set still holds.
+> **Version scope:** This behavior was observed on `@ionic/core` **8.8.1** (8.x line). Ionic
+> regenerates its JSX type definitions on every release, so the exact set of tolerated `@internal`
+> attributes can shift between versions — re-verify after each major **and** minor bump rather than
+> assuming the last-known-good set still holds.
 
 ---
 
