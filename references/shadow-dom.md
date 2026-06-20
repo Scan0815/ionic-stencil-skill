@@ -160,9 +160,11 @@ non-public Ionic attribute that the bundled Stencil compiler tolerates only by a
 > Before every `@ionic/core` update, run a build smoke test (e.g. `nx build console`) to catch a
 > dropped attribute at compile time instead of at runtime.
 >
-> **Version scope:** This behavior was observed on `@ionic/core` **8.8.1** (8.x line). Ionic
-> regenerates its JSX type definitions on every release, so the exact set of tolerated `@internal`
-> attributes can shift between versions — re-verify after each major **and** minor bump rather than
+> **Observed regression:** Up to and including `@ionic/core` **8.8.1**, an inline `cssClass=` JSX
+> attribute still behaved as the older docs described. It **broke by 8.8.11** (the current `latest`
+> on the 8.x line) — a concrete example of exactly this fragility, and why `class=` is the safe
+> choice. Ionic regenerates its JSX type definitions on every release, so the tolerated `@internal`
+> set can shift between minor versions — re-verify after each major **and** minor bump rather than
 > assuming the last-known-good set still holds.
 
 ---
