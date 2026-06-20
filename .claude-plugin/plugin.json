@@ -1,7 +1,7 @@
 {
   "name": "ionic-stencil",
   "description": "Master Ionic Framework components with StencilJS, Shadow DOM, CSS variables, lifecycle hooks, and performance optimization.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Scan0815"
   }
