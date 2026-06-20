@@ -7,8 +7,8 @@ Ionic components fall into three categories. You can identify which one a compon
 | Type | Badge | Style access |
 |------|-------|--------------|
 | **Light DOM** | None | Direct CSS, any selector works |
-| **Scoped** | 🟠 Orange | CSS vars + global styles; controller `cssClass` (Alert, Toast, Loading, Action Sheet) |
-| **Shadow** | 🔵 Blue | CSS vars + `::part()` only (incl. Modal, Popover) |
+| **Scoped** | 🟠 Orange | CSS vars + global styles; controller `cssClass` (Alert, Loading, Action Sheet) |
+| **Shadow** | 🔵 Blue | CSS vars + `::part()` only (incl. Modal, Popover, Toast) |
 
 > Never try `ion-button .button-native { ... }` — Shadow DOM blocks it completely.
 
@@ -87,7 +87,7 @@ Find all parts for a component under "CSS Shadow Parts" in the Ionic API docs fo
 
 ## Scoped Overlays — use cssClass (controller API)
 
-For **Scoped** overlay components — **Alert, Toast, Loading, Action Sheet** — pass `cssClass`
+For **Scoped** overlay components — **Alert, Loading, Action Sheet** — pass `cssClass`
 to the **controller's `create()`** call. The class lands on the host wrapper, and because these
 overlays are Scoped you can reach their inner elements with plain descendant selectors:
 
@@ -117,11 +117,11 @@ const alert = await alertController.create({
 
 ---
 
-## Shadow Overlays (Modal, Popover) — use ::part() + CSS variables
+## Shadow Overlays (Modal, Popover, Toast) — use ::part() + CSS variables
 
-`ion-modal` and `ion-popover` are **Shadow DOM**, not Scoped. The descendant-selector trick above
-(`.my-class .modal-wrapper`) does **not** reach inside them. Style them via **CSS variables** and
-**`::part()`** instead:
+`ion-modal`, `ion-popover` and `ion-toast` are **Shadow DOM**, not Scoped. The descendant-selector
+trick above (`.my-class .modal-wrapper`) does **not** reach inside them. Style them via **CSS
+variables** and **`::part()`** instead — e.g. `ion-toast.my-toast::part(message)`:
 
 ```css
 /* Controller API: cssClass lands on the host ion-modal — combine it with ::part()/vars */

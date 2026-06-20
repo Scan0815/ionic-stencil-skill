@@ -533,8 +533,8 @@ Read `references/shadow-dom.md` for full details. Quick rules:
 | Component type | How to style internal elements |
 |---|---|
 | **Light DOM** (no badge) | Direct CSS selectors |
-| **Scoped** (orange badge) | CSS vars + global styles; controller `cssClass` (Alert, Toast, Loading, Action Sheet) |
-| **Shadow** (blue badge) | CSS variables + `::part()` only — incl. **Modal** & **Popover** |
+| **Scoped** (orange badge) | CSS vars + global styles; controller `cssClass` (Alert, Loading, Action Sheet) |
+| **Shadow** (blue badge) | CSS variables + `::part()` only — incl. **Modal**, **Popover** & **Toast** |
 
 > **Modal/Popover note:** `ion-modal` is Shadow DOM. Style via `::part()` + CSS vars. For an inline
 > `<ion-modal>` use `class="…"` (not `cssClass="…"` — that's an `@internal` JSX attribute that can
