@@ -7,8 +7,8 @@ Ionic components fall into three categories. You can identify which one a compon
 | Type | Badge | Style access |
 |------|-------|--------------|
 | **Light DOM** | None | Direct CSS, any selector works |
-| **Scoped** | 🟠 Orange | CSS vars + global styles with `cssClass` |
-| **Shadow** | 🔵 Blue | CSS vars + `::part()` only |
+| **Scoped** | 🟠 Orange | CSS vars + global styles; controller `cssClass` (Alert, Toast, Loading, Action Sheet) |
+| **Shadow** | 🔵 Blue | CSS vars + `::part()` only (incl. Modal, Popover) |
 
 > Never try `ion-button .button-native { ... }` — Shadow DOM blocks it completely.
 
@@ -85,12 +85,14 @@ Find all parts for a component under "CSS Shadow Parts" in the Ionic API docs fo
 
 ---
 
-## Scoped Components — use cssClass
+## Scoped Overlays — use cssClass (controller API)
 
-For overlay/input components (Alert, Modal, Popover, etc.) that are **Scoped**, use `cssClass`:
+For **Scoped** overlay components — **Alert, Toast, Loading, Action Sheet** — pass `cssClass`
+to the **controller's `create()`** call. The class lands on the host wrapper, and because these
+overlays are Scoped you can reach their inner elements with plain descendant selectors:
 
 ```ts
-// In your component code
+// In your component code — cssClass is a controller option, NOT a JSX attribute
 const alert = await alertController.create({
   cssClass: 'my-custom-alert',
   header: 'Warning',
@@ -112,6 +114,51 @@ const alert = await alertController.create({
 ```
 
 > Overlay components are appended to `<ion-app>`, outside your page's scoped styles. Always put these overrides in **global CSS**.
+
+---
+
+## Shadow Overlays (Modal, Popover) — use ::part() + CSS variables
+
+`ion-modal` and `ion-popover` are **Shadow DOM**, not Scoped. The descendant-selector trick above
+(`.my-class .modal-wrapper`) does **not** reach inside them. Style them via **CSS variables** and
+**`::part()`** instead:
+
+```css
+/* Controller API: cssClass lands on the host ion-modal — combine it with ::part()/vars */
+ion-modal.my-modal {
+  --height: 50%;
+  --border-radius: 16px;
+}
+ion-modal.my-modal::part(content) {
+  border: 1px solid rgba(255,255,255,0.1);
+}
+ion-modal.my-modal::part(backdrop) {
+  background: rgba(0, 0, 0, 0.6);
+}
+```
+
+> ❌ `.my-modal .modal-wrapper { ... }` — Shadow DOM blocks descendant selectors into the modal.
+> ✅ `ion-modal.my-modal::part(content) { ... }` — `::part()` is the only way inside.
+
+### Inline `<ion-modal>` → use `class=`, never `cssClass=`
+
+When you place a modal inline in JSX (instead of `modalController.create()`), set a **`class`**, not
+`cssClass`. `cssClass` is only a **controller option** — as a JSX attribute it is an `@internal`,
+non-public Ionic attribute that the bundled Stencil compiler tolerates only by accident.
+
+```tsx
+// ❌ cssClass as a JSX attribute — @internal, can break on an @ionic/core bump
+<ion-modal cssClass="my-modal" isOpen={this.open}>…</ion-modal>
+
+// ✅ class — type-safe across Ionic versions; lands on the SAME host element,
+//    so global `ion-modal.my-modal { … }` / `::part()` rules apply unchanged
+<ion-modal class="my-modal" isOpen={this.open}>…</ion-modal>
+```
+
+> ⚠️ **Version fragility:** Ionic minor bumps can break previously tolerated `@internal` / non-public
+> JSX attributes (`cssClass`, `size`, `menuId`, …) as soon as the bundled Stencil compiler changes.
+> Before every `@ionic/core` update, run a build smoke test (e.g. `nx build console`) to catch a
+> dropped attribute at compile time instead of at runtime.
 
 ---
 
